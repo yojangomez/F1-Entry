@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>F1 ENTRY | Book & Manage Grandstand Tickets</title>
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+        <style>
+            :root {
+                --f1-red: #E10600;
+                --f1-red-hover: #b80500;
+                --f1-red-glow: rgba(225, 6, 0, 0.4);
+                --bg-dark: #0B0C10;
+                --bg-card: #151821;
+                --border-dark: #2A2F3D;
+                --text-silver: #CBD5E1;
+                --text-muted: #94A3B8;
+                --accent-yellow: #FFB800;
+                --carbon-pattern: radial-gradient(#1e2330 1px, transparent 1px);
+            }
+
+            body {
+                font-family: 'Titillium Web', sans-serif;
+                background-color: var(--bg-dark);
+                color: #FFFFFF;
+                overflow-x: hidden;
+                padding-top: 85px;
+            }
+
+            h1, h2, h3, h4, h5, .font-heading {
+                font-family: 'Rajdhani', sans-serif;
+                text-transform: uppercase;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+
+            .bg-grid-pattern {
+                background-image: var(--carbon-pattern);
+                background-size: 24px 24px;
+            }
+
+            .btn-f1-red {
+                background-color: var(--f1-red);
+                color: #FFF;
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border: 1px solid var(--f1-red);
+                border-radius: 4px;
+                box-shadow: 0 0 15px var(--f1-red-glow);
+                transition: all 0.3s ease;
+            }
+
+            .btn-f1-red:hover, .btn-f1-red:focus {
+                background-color: var(--f1-red-hover);
+                color: #FFF;
+                box-shadow: 0 0 25px rgba(225, 6, 0, 0.7);
+                transform: translateY(-2px);
+            }
+
+            .navbar-f1 {
+                background-color: rgba(11, 12, 16, 0.95);
+                backdrop-filter: blur(10px);
+                border-bottom: 2px solid var(--f1-red);
+                padding: 12px 0;
+            }
+
+            .navbar-brand-f1 {
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 700;
+                font-size: 1.8rem;
+                color: #FFFFFF;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .navbar-brand-f1 span { color: var(--f1-red); }
+
+            .nav-link-f1 {
+                color: var(--text-silver);
+                font-weight: 600;
+                font-size: 0.95rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin: 0 8px;
+                transition: color 0.3s ease;
+            }
+
+            .nav-link-f1:hover, .nav-link-f1.active { color: var(--f1-red) !important; }
+
+            .f1-card {
+                background-color: var(--bg-card);
+                border: 1px solid var(--border-dark);
+                border-radius: 8px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .f1-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--f1-red);
+            }
+
+            .category-badge {
+                background-color: #262B38;
+                color: var(--accent-yellow);
+                font-size: 0.75rem;
+                font-weight: 700;
+                padding: 4px 10px;
+                border-radius: 4px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+
+            .driver-ticket-preview {
+                background: linear-gradient(145deg, #1A1D26, #0F1117);
+                border: 1px dashed var(--f1-red);
+                border-radius: 8px;
+                padding: 24px;
+                position: relative;
+            }
+
+            .driver-ticket-preview::after {
+                content: 'F1 GRANDSTAND PASS';
+                position: absolute;
+                top: 12px;
+                right: 16px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                color: var(--f1-red);
+                letter-spacing: 2px;
+                opacity: 0.9;
+            }
+
+            .form-control-f1, .form-select-f1 {
+                background-color: #1A1D26;
+                border: 1px solid var(--border-dark);
+                color: #FFF;
+                border-radius: 4px;
+                padding: 11px 14px;
+            }
+
+            .form-control-f1:focus, .form-select-f1:focus {
+                background-color: #202430;
+                border-color: var(--f1-red);
+                color: #FFF;
+                box-shadow: 0 0 10px var(--f1-red-glow);
+            }
+
+            .form-control-f1:disabled {
+                background-color: #11131A;
+                color: var(--text-muted);
+                border-color: #1E2330;
+                cursor: not-allowed;
+            }
+
+            .form-label-f1 {
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                color: var(--text-silver);
+                margin-bottom: 6px;
+            }
+
+            .checkered-bar {
+                height: 6px;
+                background: repeating-linear-gradient(90deg, #FFF, #FFF 10px, #000 10px, #000 20px);
+            }
+        </style>
+    </head>
+
+    <body class="bg-grid-pattern">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-f1 fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand-f1" href="index.html">
+                    <i class="fa-solid fa-flag-checkered text-danger fs-3"></i>
+                    <div>F1 <span>ENTRY</span></div>
+                </a>
+                <button class="navbar-toggler border-secondary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#f1Navbar">
+                    <i class="fa-solid fa-bars text-white"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="f1Navbar">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link nav-link-f1" href="index.html"><i class="fa-solid fa-arrow-left me-1"></i> Back to Home</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-f1 active" href="#buy-ticket">Buy Ticket</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-f1" href="#manage-booking">Manage Inscription</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- HU1: Compra de tickets y eleccion de zona -->
+        <section id="buy-ticket" class="py-5">
+            <div class="container py-3">
+                <div class="mb-4">
+                    <span class="category-badge">Spectator Registration</span>
+                    <h1 class="display-6 mt-2 text-white">PURCHASE <span class="text-danger">TICKET</span></h1>
+                    <p style="color: var(--text-muted);">Fill in your personal details and select an available viewing zone. Your entry is confirmed once payment is approved</p>
+                </div>
+                <div class="row g-4 align-items-start">
+                    <div class="col-lg-7">
+                        <div class="f1-card p-4">
+                            <form id="ticketPurchaseForm">
+                                <h5 class="text-white mb-3 border-bottom border-secondary pb-2">
+                                    <i class="fa-solid fa-id-card text-danger me-2"></i> Viewer Details
+                                </h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-8">
+                                        <label for="full_name" class="form-label-f1">Full Name *</label>
+                                        <input type="text" class="form-control form-control-f1" id="full_name" name="full_name" placeholder="e.g. Carlos Sainz" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="type_document" class="form-label-f1">Document Type *</label>
+                                        <select class="form-select form-select-f1" id="type_document" name="type_document" required>
+                                            <option value="CC">Cedula</option>
+                                            <option value="Passport">Passport</option>
+                                            <option value="CE">Cedula Extranjería</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="document_number" class="form-label-f1">Document Number *</label>
+                                        <input type="text" class="form-control form-control-f1" id="document_number" name="document_number" placeholder="e.g. 1020304050" required>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label for="email" class="form-label-f1">Email Address *</label>
+                                        <input type="email" class="form-control form-control-f1" id="email" name="email" placeholder="spectator@email.com" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="phone" class="form-label-f1">Phone</label>
+                                        <input type="tel" class="form-control form-control-f1" id="phone" name="phone" placeholder="+57 300 000 0000">
+                                    </div>
+                                </div>
+                                <h5 class="text-white mb-3 border-bottom border-secondary pb-2">
+                                    <i class="fa-solid fa-location-dot text-danger me-2"></i> Circuit & Grandstand Location
+                                </h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="circuit_id" class="form-label-f1">Formula 1 Circuit *</label>
+                                        <select class="form-select form-select-f1" id="circuit_id" name="circuit_id" required>
+                                            <option value="">Select a circuit...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="zone_id" class="form-label-f1">Viewing Zone (Available Spots) *</label>
+                                        <select class="form-select form-select-f1" id="zone_id" name="zone_id" required>
+                                            <option value="">Select a circuit first...</option>
+                                        </select>
+                                        <div id="zone-availability-msg" class="small mt-1 text-warning"></div>
+                                    </div>
+                                </div>
+                                <h5 class="text-white mb-3 border-bottom border-secondary pb-2">
+                                    <i class="fa-solid fa-credit-card text-danger me-2"></i> Payment Gateway
+                                </h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12">
+                                        <label for="payment_method" class="form-label-f1">Payment Method *</label>
+                                        <select class="form-select form-select-f1" id="payment_method" name="payment_method" required>
+                                            <option value="Credit Card">Credit / Debit Card</option>
+                                            <option value="PayPal">PayPal</option>
+                                            <option value="Bank Transfer">Bank Transfer / PSE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" id="btn-submit-purchase" class="btn btn-f1-red w-100 py-3">
+                                    <i class="fa-solid fa-lock me-2"></i> Confirm Payment & Register
+                                </button>
+                            </form>
+                            <div id="purchase-feedback" class="mt-3"></div>
+                        </div>
+                    </div>
+                    <!-- Informacion del pase -->
+                    <div class="col-lg-5">
+                        <div class="driver-ticket-preview">
+                            <h3 class="text-white mb-3" id="preview-circuit-name">SELECT A CIRCUIT</h3>
+                            <div class="mb-3 pb-3 border-bottom border-secondary">
+                                <div class="small" style="color: var(--text-muted);">TICKET HOLDER</div>
+                                <div class="fs-5 fw-bold text-white" id="preview-spectator-name">F1 SPECTATOR</div>
+                                <div class="small" style="color: var(--text-silver);" id="preview-document">DOC: ---</div>
+                            </div>
+                            <div class="row g-2 mb-3 pb-3 border-bottom border-secondary">
+                                <div class="col-7">
+                                    <div class="small" style="color: var(--text-muted);">VIEWING ZONE</div>
+                                    <div class="fw-bold text-warning" id="preview-zone-name">---</div>
+                                </div>
+                                <div class="col-5 text-end">
+                                    <div class="small" style="color: var(--text-muted);">REMAINING SPOTS</div>
+                                    <div class="fw-bold text-white" id="preview-spots">-- / --</div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between small mb-1" style="color: var(--text-silver);">
+                                <span>Circuit Base Fee:</span>
+                                <span id="preview-base-price">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between small mb-3" style="color: var(--text-silver);">
+                                <span>Grandstand Zone Fee:</span>
+                                <span id="preview-zone-price">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top border-danger">
+                                <span class="font-heading fs-5 text-white">TOTAL AMOUNT:</span>
+                                <span class="font-heading fs-2 text-danger" id="preview-total-price">$0.00 USD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="checkered-bar"></div>
+        <!-- HU2 & HU4: Manejo de circuitos -->
+        <section id="manage-booking" class="py-5" style="background-color: rgba(17, 19, 26, 0.7);">
+            <div class="container py-3">
+                <div class="mb-4">
+                    <span class="category-badge">Spectator Portal</span>
+                    <h2 class="display-6 mt-2 text-white">MANAGE <span class="text-danger">MY RESERVATION</span></h2>
+                    <p style="color: var(--text-muted);">Update typos in your personal details before race day or cancel your attendance</p>
+                </div>
+                <div class="f1-card p-4">
+                    <div class="row g-3 align-items-end mb-4">
+                        <div class="col-md-5">
+                            <label for="search_document" class="form-label-f1">Search by Document / Passport Number</label>
+                            <input type="text" class="form-control form-control-f1" id="search_document" placeholder="Enter registered document number">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" id="btn-search-booking" class="btn btn-f1-red w-100 py-2">
+                                <i class="fa-solid fa-magnifying-glass me-2"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                    <div id="booking-management-panel" class="border-top border-secondary pt-4">
+                        <form id="editSpectatorForm">
+                            <input type="hidden" id="edit_registration_id">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label for="edit_full_name" class="form-label-f1">Full Name</label>
+                                    <input type="text" class="form-control form-control-f1" id="edit_full_name" placeholder="Holder full name" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="edit_type_document" class="form-label-f1">Doc Type</label>
+                                    <select class="form-select form-select-f1" id="edit_type_document">
+                                        <option value="CC">CC</option>
+                                        <option value="Passport">Passport</option>
+                                        <option value="CE">CE</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="edit_phone" class="form-label-f1">Phone</label>
+                                    <input type="text" class="form-control form-control-f1" id="edit_phone" placeholder="Holder phone">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="edit_email" class="form-label-f1">Email Address</label>
+                                    <input type="email" class="form-control form-control-f1" id="edit_email" placeholder="holder@email.com" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit_circuit_readonly" class="form-label-f1">Circuit (Immutable)</label>
+                                    <input type="text" class="form-control form-control-f1" id="edit_circuit_readonly" placeholder="---" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit_zone_readonly" class="form-label-f1">Viewing Zone (Immutable)</label>
+                                    <input type="text" class="form-control form-control-f1" id="edit_zone_readonly" placeholder="---" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit_total_readonly" class="form-label-f1">Total Paid (Immutable)</label>
+                                    <input type="text" class="form-control form-control-f1" id="edit_total_readonly" placeholder="$0.00 USD" disabled>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-between gap-2 pt-2">
+                                <button type="submit" class="btn btn-f1-red px-4">
+                                    <i class="fa-solid fa-floppy-disk me-2"></i> Save Personal Changes
+                                </button>
+                                <button type="button" id="btn-cancel-attendance" class="btn btn-outline-danger px-4">
+                                    <i class="fa-solid fa-ban me-2"></i> Cancel Attendance (No Refund)
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="manage-feedback" class="mt-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer bg-black py-4 small text-center text-white-50 border-top border-secondary">
+            <div class="container">Copyright &copy; F1 Entry 2026</div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            let circuitsCache = [];
+            let currentZonesCache = [];
+            document.addEventListener("DOMContentLoaded", async () => {
+                await cargarCircuitos();
+                const params = new URLSearchParams(window.location.search);
+                const selectedCircuit = params.get("circuit");
+                if (selectedCircuit) {
+                    const circuitSelect = document.getElementById("circuit_id");
+                    circuitSelect.value = selectedCircuit;
+                    await onCircuitChange();
+                }
+                //Actualizar vista previa
+                document.getElementById("full_name").addEventListener("input", actualizarPreview);
+                document.getElementById("type_document").addEventListener("change", actualizarPreview);
+                document.getElementById("document_number").addEventListener("input", actualizarPreview);
+                document.getElementById("circuit_id").addEventListener("change", onCircuitChange);
+                document.getElementById("zone_id").addEventListener("change", actualizarPreview);
+            });
+            async function cargarCircuitos() {
+                try {
+                    const res = await fetch('/api/circuits');
+                    circuitsCache = await res.json();
+                    const select = document.getElementById("circuit_id");
+                    select.innerHTML = '<option value="">Select a circuit...</option>';
+                    circuitsCache.forEach(c => {
+                        select.innerHTML += `<option value="${c.circuitId}">${c.name} ($${Number(c.basePrice).toFixed(2)})</option>`;
+                    });
+                } catch (e) {
+                    console.error("Error cargando circuitos:", e);
+                }
+            }
+            async function onCircuitChange() {
+                const circuitId = document.getElementById("circuit_id").value;
+                const zoneSelect = document.getElementById("zone_id");
+                const msgEl = document.getElementById("zone-availability-msg");
+                if (!circuitId) {
+                    zoneSelect.innerHTML = '<option value="">Select a circuit first...</option>';
+                    currentZonesCache = [];
+                    actualizarPreview();
+                    return;
+                }
+                try {
+                    const res = await fetch(`/api/circuits/${circuitId}/zones`);
+                    currentZonesCache = await res.json();
+                    zoneSelect.innerHTML = '<option value="">Select a viewing zone...</option>';
+                    currentZonesCache.forEach(z => {
+                        const disabled = !z.available ? 'disabled' : '';
+                        const label = z.available
+                            ? `${z.zone_name} (+$${Number(z.zone_price).toFixed(2)} | ${z.remaining_spots} spots left)`
+                            : `${z.zone_name} (SOLD OUT)`;
+                        zoneSelect.innerHTML += `<option value="${z.zone_id}" ${disabled}>${label}</option>`;
+                    });
+                    msgEl.textContent = "Real-time availability loaded from MySQL.";
+                } catch (e) {
+                    console.error("Error cargando zonas:", e);
+                }
+                actualizarPreview();
+            }
+            function actualizarPreview() {
+                const fullName = document.getElementById("full_name").value.trim() || "F1 SPECTATOR";
+                const docType = document.getElementById("type_document").value;
+                const docNum = document.getElementById("document_number").value.trim() || "---";
+                const circuitId = parseInt(document.getElementById("circuit_id").value);
+                const zoneId = parseInt(document.getElementById("zone_id").value);
+                document.getElementById("preview-spectator-name").textContent = fullName.toUpperCase();
+                document.getElementById("preview-document").textContent = `DOC (${docType}): ${docNum}`;
+                const circuit = circuitsCache.find(c => c.circuitId === circuitId);
+                const zone = currentZonesCache.find(z => z.zone_id === zoneId);
+                const basePrice = circuit ? Number(circuit.basePrice) : 0;
+                const zonePrice = zone ? Number(zone.zone_price) : 0;
+                document.getElementById("preview-circuit-name").textContent = circuit ? circuit.name : "SELECT A CIRCUIT";
+                document.getElementById("preview-zone-name").textContent = zone ? zone.zone_name : "---";
+                document.getElementById("preview-spots").textContent = zone ? `${zone.remaining_spots} / ${zone.total_capacity}` : "-- / --";
+                document.getElementById("preview-base-price").textContent = `$${basePrice.toFixed(2)}`;
+                document.getElementById("preview-zone-price").textContent = `$${zonePrice.toFixed(2)}`;
+                document.getElementById("preview-total-price").textContent = `$${(basePrice + zonePrice).toFixed(2)} USD`;
+            }
+            // CREATE (POST /api/registrations)
+            document.getElementById("ticketPurchaseForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const feedback = document.getElementById("purchase-feedback");
+                const payload = {
+                    full_name: document.getElementById("full_name").value.trim(),
+                    type_document: document.getElementById("type_document").value,
+                    document_number: document.getElementById("document_number").value.trim(),
+                    email: document.getElementById("email").value.trim(),
+                    phone: document.getElementById("phone").value.trim(),
+                    circuit_id: parseInt(document.getElementById("circuit_id").value),
+                    zone_id: parseInt(document.getElementById("zone_id").value),
+                    payment_method: document.getElementById("payment_method").value,
+                    payment_approved: true
+                };
+                try {
+                    const res = await fetch('/api/registrations', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        feedback.innerHTML = `<div class="alert alert-danger py-2">${data.error || data.message}</div>`;
+                        return;
+                    }
+                    feedback.innerHTML = `<div class="alert alert-success py-2">
+                        <strong>${data.message}</strong> Registration ID: <strong>#${data.registration_id}</strong> | Total Paid: <strong>$${Number(data.total_paid).toFixed(2)} USD</strong>
+                    </div>`;
+                    await onCircuitChange();
+                } catch (err) {
+                    feedback.innerHTML = `<div class="alert alert-danger py-2">Server connection error.</div>`;
+                }
+            });
+            // READ (GET /api/registrations/document/{documentNumber})
+            document.getElementById("btn-search-booking").addEventListener("click", async () => {
+                const doc = document.getElementById("search_document").value.trim();
+                const feedback = document.getElementById("manage-feedback");
+                if (!doc) return;
+                try {
+                    const res = await fetch(`/api/registrations/document/${encodeURIComponent(doc)}`);
+                    const data = await res.json();
+                    if (!res.ok) {
+                        feedback.innerHTML = `<div class="alert alert-warning py-2">${data.error}</div>`;
+                        return;
+                    }
+                    document.getElementById("edit_registration_id").value = data.registration_id;
+                    document.getElementById("edit_full_name").value = data.full_name;
+                    document.getElementById("edit_type_document").value = data.type_document || "CC";
+                    document.getElementById("edit_phone").value = data.phone || "";
+                    document.getElementById("edit_email").value = data.email;
+                    document.getElementById("edit_circuit_readonly").value = data.circuit_name;
+                    document.getElementById("edit_zone_readonly").value = data.zone_name;
+                    document.getElementById("edit_total_readonly").value = `$${Number(data.total_paid).toFixed(2)} USD`;
+                    feedback.innerHTML = `<div class="alert alert-info py-2">Active registration #${data.registration_id} loaded.</div>`;
+                } catch (err) {
+                    feedback.innerHTML = `<div class="alert alert-danger py-2">Error searching booking.</div>`;
+                }
+            });
+            // UPDATE (PUT /api/registrations/{registrationId}/spectator)
+            document.getElementById("editSpectatorForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const regId = document.getElementById("edit_registration_id").value;
+                const feedback = document.getElementById("manage-feedback");
+                if (!regId) {
+                    feedback.innerHTML = `<div class="alert alert-warning py-2">Search a reservation first.</div>`;
+                    return;
+                }
+                const payload = {
+                    full_name: document.getElementById("edit_full_name").value.trim(),
+                    type_document: document.getElementById("edit_type_document").value,
+                    phone: document.getElementById("edit_phone").value.trim(),
+                    email: document.getElementById("edit_email").value.trim()
+                };
+                try {
+                    const res = await fetch(`/api/registrations/${regId}/spectator`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        feedback.innerHTML = `<div class="alert alert-danger py-2">${data.error}</div>`;
+                        return;
+                    }
+                    feedback.innerHTML = `<div class="alert alert-success py-2">${data.message}</div>`;
+                } catch (err) {
+                    feedback.innerHTML = `<div class="alert alert-danger py-2">Error updating personal details.</div>`;
+                }
+            });
+            // DELETE / CANCEL NO REFUND (DELETE /api/registrations/{registrationId})
+            document.getElementById("btn-cancel-attendance").addEventListener("click", async () => {
+                const regId = document.getElementById("edit_registration_id").value;
+                const feedback = document.getElementById("manage-feedback");
+                if (!regId) {
+                    feedback.innerHTML = `<div class="alert alert-warning py-2">Search a reservation first.</div>`;
+                    return;
+                }
+                if (!confirm("Strict No-Refund Policy: Are you sure you want to cancel your attendance? No money will be refunded and your seat will be released.")) {
+                    return;
+                }
+                try {
+                    const res = await fetch(`/api/registrations/${regId}`, { method: 'DELETE' });
+                    const data = await res.json();
+                    if (res.ok) {
+                        document.getElementById("editSpectatorForm").reset();
+                        document.getElementById("edit_registration_id").value = "";
+                        feedback.innerHTML = `<div class="alert alert-danger py-2">${data.message}</div>`;
+                        await onCircuitChange();
+                    }
+                } catch (err) {
+                    feedback.innerHTML = `<div class="alert alert-danger py-2">Error cancelling attendance.</div>`;
+                }
+            });
+        </script>
+    </body>
+</html>
