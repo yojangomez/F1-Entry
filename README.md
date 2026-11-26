@@ -10,10 +10,7 @@ F1 Entry es una aplicación web desarrollada para facilitar la consulta, reserva
 - Spring Boot
 - MySQL
 - HTML5
-- CSS3
-- JavaScript
 - Bootstrap 5
-- jsPDF
 - Maven
 
 **Funcionalidades principales**
@@ -40,6 +37,5 @@ El proyecto incluye el archivo `f1entry.sql`, que contiene la estructura de la b
 5. Ejecutar la aplicación Spring Boot
 6. Abrir la aplicación desde el navegador mediante `http://localhost:8080`
 
-**Proyecto académico – 2026**
-
-Desarrollado por Yojan Gómez[cite: 7].
+**Proyecto Final – 2026**
+Desarrollado por Yojan Gómez
